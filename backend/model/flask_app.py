@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from bson import ObjectId
 import csv
 import jwt
+import json
 # Load environment variables
 load_dotenv()
 
@@ -16,9 +17,9 @@ app = Flask(__name__)
 # Update CORS configuration with specific settings
 CORS(app, resources={
     r"/*": {
-        "origins": ["http://localhost:5175", "http://localhost:3000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
+        "origins": ["http://localhost:5173", "http://localhost:3000"],  # Allow frontend origins
+        "methods": ["GET", "POST", "OPTIONS"],  # Explicitly allow methods
+        "allow_headers": ["Content-Type", "Authorization"],  # Allow necessary headers
     }
 })
 
@@ -141,14 +142,11 @@ def extract_tax_details(pdf_text, pdf_tables):
 
 @app.route("/upload", methods=["POST"])
 def upload_pdf():
-
-    
-
     user_id = request.form.get("userId")
-    print(user_id)
+    # print(user_id)
 
     user = user_collection.find_one({"_id": ObjectId(user_id)})
-    print(user)
+    # print(user)
 
     if user["tax_details_id"] is not None:
         return jsonify({"message": "Tax details already uploaded"}), 400

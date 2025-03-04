@@ -1,25 +1,17 @@
-// React Frontend (App.jsx)
-import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import Form16Upload from "./components/Form16Upload";
-
+import Navbar from "./components/Navbar";
+import AddInvestments from "./components/AddInvestments";
 function App() {
   const isAuthenticated = localStorage.getItem("token");
 
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const response = await fetch("/profile", { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
-  //     const data = await response.json();
-  //     setUser(data);
-  //   };
-
   return (
     <BrowserRouter>
+      {isAuthenticated && <Navbar />} {/* Show Navbar only if authenticated */}
       <Routes>
         <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
         <Route
@@ -30,6 +22,10 @@ function App() {
         <Route
           path="/upload-form16"
           element={isAuthenticated ? <Form16Upload /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/add-investments"
+          element={isAuthenticated ? <AddInvestments /> : <Navigate to="/" />}
         />
       </Routes>
     </BrowserRouter>
