@@ -301,11 +301,13 @@ app.get("/tax-comparison", async (req, res) => {
     const token = authHeader.split(" ")[1]; // Extract token
     const { id } = jwt.verify(token, process.env.JWT_SECRET); // Verify token
     console.log("User ID:", id);
-    console.log(typeof id);
+    // console.log(typeof id);
 
     const comparison = await TaxComparison.findOne({
       userId: id,
     }); // Fetch only one response
+
+    console.log("Tax Comparison:", comparison);
     if (!comparison) {
       return res.status(404).json({ message: "No tax comparison found for this user" });
     }
